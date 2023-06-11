@@ -14,11 +14,22 @@ public class Country {
 
 
 
-    public Country(String name, List<State> states) {
-        //string olrak ulkenin ismi listolarakta eyaletleri istiyor
+//    public Country(String name, List<State> states) {
+//        //string olrak ulkenin ismi listolarakta eyaletleri istiyor
+//        this.name = name;
+//        this.states = states;
+//    }
+
+    public Country(String name, List<pojos.State> state) {
         this.name = name;
         this.states = states;
     }
+
+//    public Country(String banana, List<pojos.State> stateList) {
+//        //string olrak ulkenin ismi listolarakta eyaletleri istiyor
+//        this.name = name;
+//        this.states = states;
+//    }
 
     public String getName() {
         return name;

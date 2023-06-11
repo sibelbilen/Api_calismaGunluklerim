@@ -1,12 +1,16 @@
 package gmi_bank;
 
+import Utilies.ObjectMapperUtils;
 import base_urls.GmiBankBaseUrl;
+import io.restassured.response.Response;
 import org.junit.Test;
 import pojos.Country;
 import pojos.State;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static io.restassured.RestAssured.given;
 
 public class PostCountry extends GmiBankBaseUrl {
      /*
@@ -72,9 +76,27 @@ public class PostCountry extends GmiBankBaseUrl {
        State state3=new State(3,"Pear");
 //objeleri bir listin icine koyacagiz
 
-       List<State>stateList=new ArrayList<>();
+        List<State> stateList = new ArrayList<>();
+        stateList.add(state1);
+        stateList.add(state2);
+        stateList.add(state3);
+
+        Country expectedData = new Country("Banana",stateList);
+        System.out.println("expectedData = " + expectedData);
+
+
        Country country=new Country("Banana",stateList);
        System.out.println("country = " + country);
+
+//Send the request and get the response
+        Response response = given(spec).body(expectedData).post("{first}/{second}");
+        response.prettyPrint();
+
+        //Do assertion
+
+
+        
+
    }
    }
 
