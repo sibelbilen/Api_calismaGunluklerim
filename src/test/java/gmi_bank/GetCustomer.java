@@ -1,6 +1,11 @@
 package gmi_bank;
 
+import Utilies.ObjectMapperUtils;
+import base_urls.GmiBankBaseUrl;
 import base_urls.HerokuAppBaseurl;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import org.junit.Assert;
 import org.junit.Test;
 import pojos.Account;
 import pojos.Country;
@@ -8,6 +13,9 @@ import pojos.Customer;
 import pojos.User;
 
 import java.util.ArrayList;
+
+import static io.restassured.RestAssured.given;
+import static org.junit.Assert.assertEquals;
     /*
     Given
         https://www.gmibank.com/api/tp-customers/133986
@@ -75,7 +83,7 @@ import java.util.ArrayList;
 }
      */
 
-public class GetCustomer  extends HerokuAppBaseurl {
+public class GetCustomer  extends GmiBankBaseUrl {
 
     @Test
     public void getCustomer() {
@@ -97,6 +105,35 @@ public class GetCustomer  extends HerokuAppBaseurl {
         Customer expectedData = new Customer(133986, "Danika", "Huel", "S", "danikahuel@gmail.com", "155-489-7844", "155-489-7844", "32476", "3848 Lang Hill", "Free City", "725-97-6213", "2022-01-21T05:00:00Z", false, country, "Apple", user, accountList);
         System.out.println("expectedData = " + expectedData);
 
+//send the request and get the response
+     Response response= given(spec).get("{first}/{second}/{third}");
+     response.prettyPrint();
+
+     //do assertion
+        
+        Customer actualData= ObjectMapperUtils.convertJsonToJava(response.asString(),Customer.class);
+        System.out.println("actualData = " + actualData);
+
+      assertEquals(200,response.statusCode());
+        assertEquals(expectedData.getFirstName(), actualData.getFirstName());
+        assertEquals(expectedData.getLastName(), actualData.getLastName());
+        assertEquals(expectedData.getMiddleInitial(), actualData.getMiddleInitial());
+        assertEquals(expectedData.getEmail(), actualData.getEmail());
+        assertEquals(expectedData.getMobilePhoneNumber(), actualData.getMobilePhoneNumber());
+        assertEquals(expectedData.getState(), actualData.getState());
+
+        //Ödev...
+
+        assertEquals(country.getName(), actualData.getCountry().getName());
+        assertEquals(country.getStates(), actualData.getCountry().getStates());
+
+        assertEquals(user.getId(), actualData.getUser().getId());
+        assertEquals(user.getLogin(), actualData.getUser().getLogin());
+        //Ödev...
+
+        assertEquals(account1.getId(), actualData.getAccounts().get(0).getId());
+        assertEquals(account1.getDescription(), actualData.getAccounts().get(0).getDescription());
+        //Ödev...
 
     }
 }
